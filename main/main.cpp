@@ -38,6 +38,23 @@ void draw_gray_scale_bars()
     GetHAL().display.endWrite();
 }
 
+void boot_display_test()
+{
+    draw_firmware_version();
+    GetHAL().delay(1000);
+
+    GetHAL().display.setEpdMode(epd_mode_t::epd_quality);
+    GetHAL().display.fillScreen(TFT_BLACK);
+    GetHAL().delay(2000);
+
+    GetHAL().display.setEpdMode(epd_mode_t::epd_quality);
+    GetHAL().display.fillScreen(TFT_WHITE);
+    GetHAL().delay(2000);
+
+    draw_gray_scale_bars();
+    GetHAL().delay(2000);
+}
+
 void check_full_display_refresh_request(bool force = false)
 {
     static uint32_t last_full_refresh_time = GetHAL().millis();
@@ -60,11 +77,7 @@ extern "C" void app_main(void)
 
     GetHAL().init();
 
-    draw_firmware_version();
-    GetHAL().delay(2000);
-
-    draw_gray_scale_bars();
-    GetHAL().delay(3000);
+    boot_display_test();
 
     // Install apps
     GetMooncake().installApp(std::make_unique<AppPower>());
